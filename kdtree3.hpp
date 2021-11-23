@@ -78,27 +78,13 @@ Tree::Tree(int points_num, const Accessor& access)
 int Tree::make3DTree(const int l, const int r,
                       const int depth)
 {
-    auto criteria_x = [&](int a, int b)
+    int axis = depth % 3;
+    auto criteria = [&](int a, int b)
     {
         Point one = _access(a);
         Point other = _access(b);
 
-        return one[0] < other[0];
-    };
-    auto criteria_y = [&](int a, int b)
-    {
-        Point one = _access(a);
-        Point other = _access(b);
-
-        return one[1] < other[1];
-    };
-
-    auto criteria_z = [&](int a, int b)
-    {
-        Point one = _access(a);
-        Point other = _access(b);
-
-        return one[2] < other[2];
+        return one[axis] < other[axis];
     };
 
     if(r <= l)
@@ -110,18 +96,7 @@ int Tree::make3DTree(const int l, const int r,
     int mid = (l + r) / 2;
 
     // [l,r)の中央値で分割する
-    if(depth % 3 == 0)
-    {
-        std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria_x);
-    }   
-    else if(depth % 3 == 1)
-    {
-        std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria_y);
-    }
-    else
-    {
-        std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria_z);
-    }
+    std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria);
 
     int t = np++;
     _nodes[t].location = mid;
