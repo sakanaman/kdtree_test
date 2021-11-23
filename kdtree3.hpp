@@ -64,7 +64,7 @@ private:
 
 
 Tree::Tree(int points_num, const Accessor& access)
-    :_access(access), _nodes(3 * points_num)
+    :_access(access), _nodes(points_num)
 {
     _points.resize(points_num);
 
@@ -107,21 +107,22 @@ int Tree::make3DTree(const int l, const int r,
     }
 
     auto begin_iter = _points.begin();
-    // [l,r)をソートする
+    int mid = (l + r) / 2;
+
+    // [l,r)の中央値で分割する
     if(depth % 3 == 0)
     {
-        std::sort(begin_iter + l, begin_iter + r, criteria_x);
+        std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria_x);
     }   
     else if(depth % 3 == 1)
     {
-        std::sort(begin_iter + l, begin_iter + r, criteria_y);
+        std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria_y);
     }
     else
     {
-        std::sort(begin_iter + l, begin_iter + r, criteria_z);
+        std::nth_element(begin_iter + l, begin_iter + mid, begin_iter + r, criteria_z);
     }
 
-    int mid = (l + r) / 2;
     int t = np++;
     _nodes[t].location = mid;
     _nodes[t].left = make3DTree(l, mid, depth+1);
