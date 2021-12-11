@@ -3,7 +3,7 @@
 
 int main()
 {
-    int n = 1000000;
+    int n = 5000000;
     int small = 20;
     kdtree::dim3::Points _points(n + small);
     int x,y;
@@ -30,7 +30,7 @@ int main()
     {
         double theta = M_PI * rand();
         double phi = 2 * M_PI * rand();
-        double r = 6.0 + rand();
+        double r = 2.0 + rand();
         _points[i + small] = {r * std::sin(theta)*std::cos(phi), 
                               r * std::sin(theta)*std::sin(phi),
                               r * std::cos(theta)};
@@ -57,7 +57,7 @@ int main()
     printf("%d\n", res.size());
     for(auto val : res)
     {
-        printf("%f\n", sqrt(val[0]*val[0]+ val[1]*val[1]));
+        printf("%f\n", sqrt(val[0]*val[0]+ val[1]*val[1] + val[2]*val[2]));
     }
 
     res.clear();
